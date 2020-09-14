@@ -1,23 +1,23 @@
 # Pull in the text file to analyze the words used
 import string
 
-name = input("Enter file (without extension):")
-if name == "r":name = "romeo"
-if name == "p":name = "pg63189"
-filename = name + ".txt"
-xfile = open(filename)
-words = { } # Create the dictionary that will eventually have the word histogram
-count = 0 # Word count starts at 0, clearly
-alllines = list() # Create an empty list for later
-
+# Defining all the functions I'm using
+def saveanalysis(name):
+    newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
+    file = open(newfilename, "w") # Creates a new file to write thsi information to
+    file.write(str("Word count: " + str(count)) + "\n") # Writes the word count to a line
+    file.write(str(words)) # Writes the word frequency dictionary to the second line
+    file.close # Closes the file
+    return newfilename
+    
 def cleanline(line):
     temp = line.strip() # Get rid of white space
     temp = temp.lower() # Lower case all letters
     temp = temp.translate(str.maketrans("","",string.punctuation)) # Strip out all punctuation
     return temp
 
-# Function to create a sorted list out of a dictionary, sorted by the values, not the keys
 def sortdictval(d,rev):
+    # Function to create a sorted list out of a dictionary, sorted by the values, not the keys
     # Initialize variables
     tmp = list() # Create an empty list
     sortlist = list() # Create an empty version of the returned list
@@ -34,29 +34,32 @@ def sortdictval(d,rev):
 
     # You return a list, not a dictionary, because lists have order, while dictionaries do not
     return sortlist
-
+    
 def makefulltextlist(file):
     # Takes the file and makes a list where each item is a line of text - allows finer control over going through each line later
     lines = []
     for line in file:
         lines.append(line)
     return lines
-    
-alllines = makefulltextlist(xfile)
 
-for i in range(len(alllines)):
-    line = alllines[i]
-    fixedline = cleanline(line)
-    w = fixedline.split()
-    for b in w:
+name = input("Enter file (without extension):")
+if len(name)<1 or name == "r":name = "romeo"
+if name == "p":name = "pg63189"
+filename = name + ".txt"
+xfile = open(filename)
+words = { } # Create the dictionary that will eventually have the word histogram
+count = 0 # Word count starts at 0, obviously
+
+alllines = makefulltextlist(xfile) # Turn the text file into a list for processing
+
+for i in range(len(alllines)): # Run through every line of text in the list
+    line = alllines[i] # Get the line from the list
+    line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
+    wordlist = line.split() # Split the line into individual words
+    for b in wordlist: # Run through every word on the line
         words[b] = words.get(b,0)+1 # Increment count, add to dictionary if not seen already
         count += 1 # Get total word count
     
 print(alllines)
 print(words)
 print(count)
-    
-# newfile = open(name + "analysis.txt", "w")
-# newfile.write(str("Word count: " + str(count)) + "\n")
-# newfile.write(str(words))
-# newfile.close

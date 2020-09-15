@@ -2,13 +2,14 @@ import string
 
 # Defining all the functions I'm using
 
-def saveanalysis(name):
-    newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
-    file = open(newfilename, "w") # Creates a new file to write thsi information to
-    file.write(str("Word count: " + str(count)) + "\n") # Writes the word count to a line
-    file.write(str(words)) # Writes the word frequency dictionary to the second line
-    file.close # Closes the file
-    return newfilename
+# def saveanalysis(name):
+    # Does not actually work - needs to be fixed
+    # newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
+    # file = open(newfilename, "w") # Creates a new file to write thsi information to
+    # file.write(str("Word count: " + str(count)) + "\n") # Writes the word count to a line
+    # file.write(str(words)) # Writes the word frequency dictionary to the second line
+    # file.close # Closes the file
+    # return newfilename
     
 def cleanline(line):
     temp = line.strip() # Get rid of white space
@@ -42,18 +43,19 @@ def makefulltextlist(file):
         lines.append(line)
     return lines
 
-def gutenbergstartendtrim(book):
+def gutenbergtrim(book):
     # If the book comes from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book
     b = makefulltextlist(book) # Turn the file into a list of lines
     start = None # Initialize start and end variables as None - will be set in the for loop
     end = None
     title = None
     for i in range(len(b)): # Loop through all the lines in the book
-        line = b[i].strip()
+        line = b[i].strip() # Strip off the whitespace to simplify text comparison
         if line.startswith("Title: "): # Get the title of the book
             title = line[7:].strip()
             print(title)
-        if line.lower().startswith(str(title).lower()): # Find the first line with the title, which is generally where the book itself starts; this line is complex/finicky because of inconsistent title capitalization
+        # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is complex/finicky to correct for inconsistent capitalization
+        if title is not None and line.lower().startswith(str(title).lower()):
             start = i
             continue
         if line.startswith("End of the Project Gutenberg EBook"): # Stop just short of this line, which is always the end of the story
@@ -80,8 +82,8 @@ def makewordfreqhist(lineslist):
             wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
             count += 1 # Get total word count
 
-    for word in wordabscount:
-        wordrelcount[word] = wordabscount[word]/count
+    for word in wordabscount: # Loop through every entry in the raw word count list
+        wordrelcount[word] = wordabscount[word]/count # Divide by word count to get frequency
         
     wordfreqhist["wordcount"] = count
     wordfreqhist["wordabscount"] = wordabscount
@@ -89,8 +91,11 @@ def makewordfreqhist(lineslist):
     
     return wordfreqhist
 
-# def comparewordfreq(a,b):
+def comparewordfreq(a,b):
     # a and b are dictionaries containing the relative word frequency for two different texts
+    
+    
+    return
     
 
 
@@ -104,6 +109,6 @@ xfile = open(filename) # Typical file opening
 # alllines = gutenbergstartendtrim(xfile) # Turn the text file into a list for processing
 # makewordfreqhist(alllines)
 
-test = gutenbergstartendtrim(xfile)
+test = gutenbergtrim(xfile)
 testdict = makewordfreqhist(test)
 print(testdict)

@@ -15,7 +15,7 @@ def cleanline(line):
     temp = line.strip() # Get rid of white space
     temp = temp.lower() # Lower case all letters
     temp = temp.replace("--"," ") # Replace double hyphens with spaces to avoid unexpected compound words
-    temp = temp.translate(str.maketrans("","",'!"“”#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')) # Strip out all punctuation
+    temp = temp.translate(str.maketrans("","",'!"“”’#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')) # Strip out all punctuation
     return temp
 
 def sortdictval(d,rev):

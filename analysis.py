@@ -15,7 +15,7 @@ def cleanline(line):
     temp = line.strip() # Get rid of white space
     temp = temp.lower() # Lower case all letters
     temp = temp.replace("--"," ") # Replace double hyphens with spaces to avoid unexpected compound words
-    temp = temp.translate(str.maketrans("","",string.punctuation)) # Strip out all punctuation
+    temp = temp.translate(str.maketrans("","",'!"“”#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')) # Strip out all punctuation
     return temp
 
 def sortdictval(d,rev):
@@ -71,10 +71,13 @@ def gutenbergtrim(book):
 
 def makewordfreqhist(lineslist):
     # Takes in a list containing all lines of a book, then constructs a histogram of word frequency and word count
+    # Initialize variables
     wordfreqhist = { } # Create the empty dictionary that will be returned at the end
     wordabscount = { } # This will include the number of times every word is used in the text
     wordrelcount = { } # The previous dictionary, but with all values divided by the total word count of the text, to get a relative measure of how frequent words are
     count = 0
+    
+    # Count the words
     for i in range(len(lineslist)): # Run through every line of text in the list
         line = lineslist[i] # Get the line from the list
         line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
@@ -83,9 +86,11 @@ def makewordfreqhist(lineslist):
             wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
             count += 1 # Get total word count
 
+    # Turn the word counts into frequency
     for word in wordabscount: # Loop through every entry in the raw word count list
         wordrelcount[word] = wordabscount[word]/count # Divide by word count to get frequency
         
+    # Build the dictionary that the function returns
     wordfreqhist["wordcount"] = count
     wordfreqhist["wordabscount"] = wordabscount
     wordfreqhist["wordrelcount"] = wordrelcount
@@ -147,7 +152,7 @@ shist = makehistogramfromfilename(s)
 
 textcomp = comparewordfreq(phist,shist)
 
-print(sortdictval(textcomp['anotb'], True)[:10])
-print(sortdictval(textcomp['bnota'], True)[:10])
-print(sortdictval(textcomp['aoverb'], True)[:10])
-print(sortdictval(textcomp['bovera'], True)[:10])
+print("Most frequent words used only in Highwayman of the Void:",sortdictval(textcomp['anotb'], True)[:10])
+print("Most frequent words used only in The Adventures of Sherlock Holmes:",sortdictval(textcomp['bnota'], True)[:10])
+print("Words used far more often in Highwayman of the Void:",sortdictval(textcomp['aoverb'], True)[:10])
+print("Words used far more often in The Adventures of Sherlock Holmes:",sortdictval(textcomp['bovera'], True)[:10])

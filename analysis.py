@@ -147,7 +147,7 @@ shist = makehistogramfromfilename(s)
 
 textcomp = comparewordfreq(phist,shist)
 
-print(sortdictval(textcomp['anotb'], True))
-print(sortdictval(textcomp['bnota'], True))
-print(sortdictval(textcomp['aoverb'], True))
-print(sortdictval(textcomp['bovera'], True))
+print(sortdictval(textcomp['anotb'], True)[:10])
+print(sortdictval(textcomp['bnota'], True)[:10])
+print(sortdictval(textcomp['aoverb'], True)[:10])
+print(sortdictval(textcomp['bovera'], True)[:10])

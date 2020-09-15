@@ -125,7 +125,8 @@ def comparewordfreq(book_a,book_b):
             aoverb[key] = histfreq_a[key]/histfreq_b[key]
             bovera[key] = histfreq_b[key]/histfreq_a[key]
             
-    wordfreqcomparison = { } # Create the main dictionary we'll return later
+    wordfreqcomparison = { } # Create the main dictionary we'll return at the end
+    # Fill up that dictionary
     wordfreqcomparison["anotb"] = anotb
     wordfreqcomparison["bnota"] = bnota
     wordfreqcomparison["aoverb"] = aoverb
@@ -133,7 +134,7 @@ def comparewordfreq(book_a,book_b):
     
     return wordfreqcomparison
     
-def makehistogramfromfile(filename):
+def makehistogramfromfilename(filename):
     # Takes in a string pointing to the file location, returns the histogram
     return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename)))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
 
@@ -141,15 +142,15 @@ def makehistogramfromfile(filename):
 p = "pg63189.txt"
 s = "1661-0.txt"
 
-phist = makehistogramfromfile(p)
-shist = makehistogramfromfile(s)
+phist = makehistogramfromfilename(p)
+shist = makehistogramfromfilename(s)
 
 textcomp = comparewordfreq(phist,shist)
 
-print(textcomp['anotb'])
-print(textcomp['bnota'])
-print(textcomp['aoverb'])
-print(textcomp['bovera'])
+print(sortdictval(textcomp['anotb']))
+print(sortdictval(textcomp['bnota']))
+print(sortdictval(textcomp['aoverb']))
+print(sortdictval(textcomp['bovera']))
 
 
 

@@ -2,18 +2,19 @@ import string
 
 # Defining all the functions I'm using
 
-# def saveanalysis(name):
+def saveanalysis(name):
     # Does not actually work - needs to be fixed
     # newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
     # file = open(newfilename, "w") # Creates a new file to write thsi information to
     # file.write(str("Word count: " + str(count)) + "\n") # Writes the word count to a line
     # file.write(str(words)) # Writes the word frequency dictionary to the second line
     # file.close # Closes the file
-    # return newfilename
+    return # newfilename
     
 def cleanline(line):
     temp = line.strip() # Get rid of white space
     temp = temp.lower() # Lower case all letters
+    temp = temp.replace("--"," ") # Replace double hyphens with spaces to avoid unexpected compound words
     temp = temp.translate(str.maketrans("","",string.punctuation)) # Strip out all punctuation
     return temp
 
@@ -54,7 +55,7 @@ def gutenbergtrim(book):
         if line.startswith("Title: "): # Get the title of the book
             title = line[7:].strip()
             print(title)
-        # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is complex/finicky to correct for inconsistent capitalization
+        # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is finicky to correct for inconsistent capitalization
         if title is not None and line.lower().startswith(str(title).lower()):
             start = i
             continue
@@ -91,24 +92,78 @@ def makewordfreqhist(lineslist):
     
     return wordfreqhist
 
-def comparewordfreq(a,b):
-    # a and b are dictionaries containing the relative word frequency for two different texts
+def comparewordfreq(book_a,book_b):
+    # book_a and book_b are the output of makewordfreqhist: dictionaries with word count, absolute counts, and relative frequencies
+    
+    # Pull out each individual dictionary from the inputs
+    histcount_a = book_a["wordabscount"]
+    histfreq_a = book_a["wordrelcount"]
+    histcount_b = book_b["wordabscount"]
+    histfreq_b = book_b["wordrelcount"]
     
     
-    return
+    # Create empty dictionaries that we're going to return later
+    anotb = { }
+    bnota = { }
+    aoverb = { }
+    bovera = { }
+        
+    # The following two sections can be done as a single function that's called twice - for now, I just want it to work
+    # Make dictionary of words in a but not in b
+    for key in histcount_a: # Looping through every entry in a
+        if histcount_b.get(key,0) == 0: # If entry in a doesn't appear in b
+            anotb[key] = histcount_a[key] # Add entry to anotb dictionary - this notes down the absolute count, not frequency
     
+    # Make dictionary of words in b bun not in a
+    for key in histcount_b: # Looping through every entry in b
+        if histcount_a.get(key,0) == 0: # If entry in a doesn't appear in a
+            bnota[key] = histcount_b[key] # Add entry to bnota dictionary - this notes down the absolute count, not frequency
+            
+    # Make two dictionaries of words in both; key is word, value is frequency in a divided by frequency in b for aoverb, frequency in b divided by frequency in a for bovera
+    for key in histfreq_a: # Loop through every entry in a
+        if histfreq_b.get(key,0) != 0: # Run only if the word is in both dictionaries
+            aoverb[key] = histfreq_a[key]/histfreq_b[key]
+            bovera[key] = histfreq_b[key]/histfreq_a[key]
+            
+    wordfreqcomparison = { } # Create the main dictionary we'll return later
+    wordfreqcomparison["anotb"] = anotb
+    wordfreqcomparison["bnota"] = bnota
+    wordfreqcomparison["aoverb"] = aoverb
+    wordfreqcomparison["bovera"] = bovera
+    
+    return wordfreqcomparison
+    
+def makehistogramfromfile(filename):
+    # Takes in a string pointing to the file location, returns the histogram
+    return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename)))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
 
 
-name = input("Enter file (without extension):")
-if len(name)<1 or name == "r":name = "romeo"
-if name == "p":name = "pg63189"
-if name == "s":name = "1661-0"
-filename = name + ".txt"
-xfile = open(filename) # Typical file opening
+p = "pg63189.txt"
+s = "1661-0.txt"
 
-# alllines = gutenbergstartendtrim(xfile) # Turn the text file into a list for processing
+phist = makehistogramfromfile(p)
+shist = makehistogramfromfile(s)
+
+textcomp = comparewordfreq(phist,shist)
+
+print(textcomp['anotb'])
+print(textcomp['bnota'])
+print(textcomp['aoverb'])
+print(textcomp['bovera'])
+
+
+
+
+# name = input("Enter file (without extension):")
+# if len(name)<1 or name == "r":name = "romeo"
+# if name == "p":name = "pg63189"
+# if name == "s":name = "1661-0"
+# filename = name + ".txt"
+# xfile = open(filename) # Typical file opening
+
+# alllines = gutenbergtrim(xfile) # Turn the text file into a list for processing
 # makewordfreqhist(alllines)
 
-test = gutenbergtrim(xfile)
-testdict = makewordfreqhist(test)
-print(testdict)
+# test = gutenbergtrim(xfile)
+# testdict = makewordfreqhist(test)
+

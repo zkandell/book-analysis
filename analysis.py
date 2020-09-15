@@ -56,7 +56,7 @@ def gutenbergtrim(book):
         if line.startswith("Title: "): # Get the title of the book
             title = line[7:].strip()
         # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is finicky to correct for inconsistent capitalization
-        if title is not None and line.lower().startswith(str(title).lower()):
+        if title is not None and line.lower().startswith(title.lower()):
             start = i
             continue
         if line.startswith("End of the Project Gutenberg EBook"): # Stop just short of this line, which is always the end of the story

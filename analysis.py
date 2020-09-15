@@ -45,16 +45,16 @@ def makefulltextlist(file):
     return lines
 
 def gutenbergtrim(book):
-    # If the book comes from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book
-    b = makefulltextlist(book) # Turn the file into a list of lines
-    start = None # Initialize start and end variables as None - will be set in the for loop
+    # If the book came from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book
+    b = makefulltextlist(book) # If a file is passed to this function rather than a list of lines, this will create the list
+    # Initialize start, end, and title variables as None - will be set in the for loop
+    start = None
     end = None
     title = None
     for i in range(len(b)): # Loop through all the lines in the book
         line = b[i].strip() # Strip off the whitespace to simplify text comparison
         if line.startswith("Title: "): # Get the title of the book
             title = line[7:].strip()
-            print(title)
         # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is finicky to correct for inconsistent capitalization
         if title is not None and line.lower().startswith(str(title).lower()):
             start = i
@@ -147,24 +147,7 @@ shist = makehistogramfromfilename(s)
 
 textcomp = comparewordfreq(phist,shist)
 
-print(sortdictval(textcomp['anotb']))
-print(sortdictval(textcomp['bnota']))
-print(sortdictval(textcomp['aoverb']))
-print(sortdictval(textcomp['bovera']))
-
-
-
-
-# name = input("Enter file (without extension):")
-# if len(name)<1 or name == "r":name = "romeo"
-# if name == "p":name = "pg63189"
-# if name == "s":name = "1661-0"
-# filename = name + ".txt"
-# xfile = open(filename) # Typical file opening
-
-# alllines = gutenbergtrim(xfile) # Turn the text file into a list for processing
-# makewordfreqhist(alllines)
-
-# test = gutenbergtrim(xfile)
-# testdict = makewordfreqhist(test)
-
+print(sortdictval(textcomp['anotb'], True))
+print(sortdictval(textcomp['bnota'], True))
+print(sortdictval(textcomp['aoverb'], True))
+print(sortdictval(textcomp['bovera'], True))

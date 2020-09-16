@@ -1,7 +1,6 @@
 import string
 
 # Defining all the functions I'm using
-
 def saveanalysis(name):
     # Does not actually work - needs to be fixed
     # newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
@@ -142,17 +141,3 @@ def comparewordfreq(book_a,book_b):
 def makehistogramfromfilename(filename):
     # Takes in a string pointing to the file location, returns the histogram
     return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename)))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
-
-
-p = "pg63189.txt"
-s = "1661-0.txt"
-
-phist = makehistogramfromfilename(p)
-shist = makehistogramfromfilename(s)
-
-textcomp = comparewordfreq(phist,shist)
-
-print("Most frequent words used only in Highwayman of the Void:",sortdictval(textcomp['anotb'], True)[:10])
-print("Most frequent words used only in The Adventures of Sherlock Holmes:",sortdictval(textcomp['bnota'], True)[:10])
-print("Words used far more often in Highwayman of the Void:",sortdictval(textcomp['aoverb'], True)[:10])
-print("Words used far more often in The Adventures of Sherlock Holmes:",sortdictval(textcomp['bovera'], True)[:10])

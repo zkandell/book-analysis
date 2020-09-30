@@ -5,7 +5,7 @@ import string
 def saveanalysis(name,hist):
     newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
     file = open(newfilename, "w") # Creates a new file to write thsi information to
-    file.write(str(hist))
+    file.write(str(hist)) # Write the dictionary as a string to a file - sure, it's a basic method, but it works
     file.close # Closes the file
     return newfilename
     
@@ -140,4 +140,3 @@ def comparewordfreq(book_a,book_b):
 def makehistogramfromfilename(filename):
     # Takes in a string pointing to the file location, returns the histogram
     return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename,encoding='utf8')))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
-    

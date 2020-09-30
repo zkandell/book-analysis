@@ -2,14 +2,12 @@
 
 import string
 
-def saveanalysis(name):
-    # Does not actually work - needs to be fixed
-    # newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
-    # file = open(newfilename, "w") # Creates a new file to write thsi information to
-    # file.write(str("Word count: " + str(count)) + "\n") # Writes the word count to a line
-    # file.write(str(words)) # Writes the word frequency dictionary to the second line
-    # file.close # Closes the file
-    return # newfilename
+def saveanalysis(name,hist):
+    newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
+    file = open(newfilename, "w") # Creates a new file to write thsi information to
+    file.write(str(hist))
+    file.close # Closes the file
+    return newfilename
     
 def cleanline(line):
     temp = line.strip() # Get rid of white space
@@ -141,5 +139,5 @@ def comparewordfreq(book_a,book_b):
     
 def makehistogramfromfilename(filename):
     # Takes in a string pointing to the file location, returns the histogram
-    return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename)))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
+    return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename,encoding='utf8')))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
     

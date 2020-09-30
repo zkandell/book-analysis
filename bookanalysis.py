@@ -1,6 +1,7 @@
+# This file is just defining functions - no actual code is executed here
+
 import string
 
-# Defining all the functions I'm using
 def saveanalysis(name):
     # Does not actually work - needs to be fixed
     # newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
@@ -74,7 +75,7 @@ def makewordfreqhist(lineslist):
     wordfreqhist = { } # Create the empty dictionary that will be returned at the end
     wordabscount = { } # This will include the number of times every word is used in the text
     wordrelcount = { } # The previous dictionary, but with all values divided by the total word count of the text, to get a relative measure of how frequent words are
-    count = 0
+    count = 0 # The total word count
     
     # Count the words
     for i in range(len(lineslist)): # Run through every line of text in the list
@@ -83,7 +84,7 @@ def makewordfreqhist(lineslist):
         wordlist = line.split() # Split the line into individual words
         for b in wordlist: # Run through every word on the line
             wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
-            count += 1 # Get total word count
+            count += 1 # Increment total word count
 
     # Turn the word counts into frequency
     for word in wordabscount: # Loop through every entry in the raw word count list
@@ -141,3 +142,4 @@ def comparewordfreq(book_a,book_b):
 def makehistogramfromfilename(filename):
     # Takes in a string pointing to the file location, returns the histogram
     return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename)))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
+    

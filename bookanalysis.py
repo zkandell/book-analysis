@@ -44,7 +44,11 @@ def makefulltextlist(file):
 
 def gutenbergtrim(book):
     # If the book came from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book
-    b = makefulltextlist(book) # If a file is passed to this function rather than a list of lines, this will create the list
+    # This function is intended to be used with a list, but it can also take a file handle
+    if isinstance(book,list): b = book # If you've passed in a book, then no need to do anything special
+    else: 
+        try: b = makefulltextlist(book) # Creates a list if the variable type passed in can be made into a list (like dictionaries or files)
+        except: return [] # If a list can't be made, then return a blank list
     # Initialize start, end, and title variables as None - will be set in the for loop
     start = None
     end = None

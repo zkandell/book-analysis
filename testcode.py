@@ -3,7 +3,7 @@ import bookanalysis as an
 p = "pg63189.txt"
 s = "1661-0.txt"
 
-phist = an.makehistogramfromfilename(p)
+phist = an.makewordfreqhist(an.gutenbergtrim(open(p,encoding='utf8')))
 shist = an.makehistogramfromfilename(s)
 
 textcomp = an.comparewordfreq(phist,shist)
@@ -14,3 +14,5 @@ print("Words used far more often in Highwayman of the Void:",an.sortdictval(text
 print("Words used far more often in The Adventures of Sherlock Holmes:",an.sortdictval(textcomp['bovera'], True)[:10])
 
 an.saveanalysis("pg63189",phist)
+
+print(an.gutenbergtrim(5))

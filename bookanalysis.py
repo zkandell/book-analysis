@@ -8,7 +8,13 @@ def saveanalysis(name,hist):
     file.write(str(hist)) # Write the dictionary as a string to a file - sure, it's a basic method, but it works
     file.close # Closes the file
     return newfilename
-    
+
+def loadanalysis(file):
+    s = file.read()
+    file.close()
+    hist = eval(s)
+    return hist
+
 def cleanline(line):
     temp = line.strip() # Get rid of white space
     temp = temp.lower() # Lower case all letters

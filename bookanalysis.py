@@ -55,8 +55,7 @@ def gutenbergtrim(book):
     title = None
     for i in range(len(b)): # Loop through all the lines in the book
         line = b[i].strip() # Strip off the whitespace to simplify text comparison
-        if line.startswith("Title: "): # Get the title of the book
-            title = line[7:].strip()
+        if line.startswith("Title: "): title = line[7:].strip() # Get the title of the book
         # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is finicky to correct for inconsistent capitalization
         if title is not None and line.lower().startswith(title.lower()):
             start = i
@@ -67,7 +66,6 @@ def gutenbergtrim(book):
     
     if start == None: start = 0
     if end == None: end = len(b) # If this doesn't come from Project Gutenberg, setting these variable will cause the function to just return the entire document unaltered
-    # print(start,end)
     trimmedbook = b[start:end]
     return trimmedbook
 
@@ -89,8 +87,7 @@ def makewordfreqhist(lineslist):
             count += 1 # Increment total word count
 
     # Turn the word counts into frequency
-    for word in wordabscount: # Loop through every entry in the raw word count list
-        wordrelcount[word] = wordabscount[word]/count # Divide by word count to get frequency
+    for word in wordabscount: wordrelcount[word] = wordabscount[word]/count # Loop through every entry in the raw word count list, divide by total word count to get frequency
         
     # Build the dictionary that the function returns
     wordfreqhist["wordcount"] = count
@@ -99,32 +96,31 @@ def makewordfreqhist(lineslist):
     
     return wordfreqhist
 
+def xnoty(book_x,book_y):
+    # Builds a dictionary with the absolute count of words used in one book and not the other
+    histcount_x = book_x['wordabscount'] # Get word counts from the dictionary passed in for each book
+    histcount_y = book_y['wordabscount']
+    xnotydict = {} # Initialize dictionary we're about to fill up
+    for key in histcount_x: # Looping through every entry in x
+        if histcount_y.get(key,0) == 0: # If entry in y doesn't appear in x
+            xnotydict[key] = histcount_x[key] # Add entry to xnoty dictionary - this notes down the absolute count, not frequency
+    return xnotydict
+
 def comparewordfreq(book_a,book_b):
     # book_a and book_b are the output of makewordfreqhist: dictionaries with word count, absolute counts, and relative frequencies
-    
     # Pull out each individual dictionary from the inputs
     histcount_a = book_a["wordabscount"]
     histfreq_a = book_a["wordrelcount"]
     histcount_b = book_b["wordabscount"]
     histfreq_b = book_b["wordrelcount"]
-    
-    
+        
     # Create empty dictionaries that we're going to return later
-    anotb = { }
-    bnota = { }
     aoverb = { }
     bovera = { }
         
-    # The following two sections can be done as a single function that's called twice - for now, I just want it to work
-    # Make dictionary of words in a but not in b
-    for key in histcount_a: # Looping through every entry in a
-        if histcount_b.get(key,0) == 0: # If entry in a doesn't appear in b
-            anotb[key] = histcount_a[key] # Add entry to anotb dictionary - this notes down the absolute count, not frequency
-    
-    # Make dictionary of words in b bun not in a
-    for key in histcount_b: # Looping through every entry in b
-        if histcount_a.get(key,0) == 0: # If entry in a doesn't appear in a
-            bnota[key] = histcount_b[key] # Add entry to bnota dictionary - this notes down the absolute count, not frequency
+    # Build histogram of words that are in one book but not the other
+    anotb = xnoty(book_a,book_b)
+    bnota = xnoty(book_b,book_a)
             
     # Make two dictionaries of words in both; key is word, value is frequency in a divided by frequency in b for aoverb, frequency in b divided by frequency in a for bovera
     for key in histfreq_a: # Loop through every entry in a

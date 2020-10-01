@@ -10,9 +10,9 @@ def saveanalysis(name,hist):
     return newfilename
 
 def loadanalysis(file):
-    s = file.read()
-    file.close()
-    hist = eval(s)
+    s = file.read() # Make a string out of the file
+    file.close() # Close the file
+    hist = eval(s) # Read the text of the string, turning it into a dictionary
     return hist
 
 def cleanline(line):
@@ -44,8 +44,7 @@ def sortdictval(d,rev):
 def makefulltextlist(file):
     # Takes the file and makes a list where each item is a line of text - allows finer control over going through each line later than file.seek()
     lines = []
-    for line in file:
-        lines.append(line)
+    for line in file: lines.append(line)
     return lines
 
 def gutenbergtrim(book):

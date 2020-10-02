@@ -24,20 +24,14 @@ def cleanline(line):
 
 def sortdictval(d,rev):
     # Function to create a sorted list out of a dictionary, sorted by the values, not the keys
-    # Initialize variables
     tmp = list() # Create an empty list
     sortlist = list() # Create an empty version of the returned list
-    
-    # Make a temporary list that holds items from the dictionary
     for k,v in d.items(): # Run through every item in the dictionary
         tmp.append((v,k)) # Add a tuple to the list, but in reversed order, putting values before keys
-    
-    # Sort the list, with rev determining which order the list is sorted in
+        # Sort the list, with rev determining which order the list is sorted in
     tmp = sorted(tmp, reverse=rev)
-    
     for v,k in tmp: # Run through all items in tmp
         sortlist.append((k,v)) # Reverse the order to get key value pairs in the right order again
-
     # You return a list, not a dictionary, because lists have order, while dictionaries do not
     return sortlist
     

@@ -34,6 +34,8 @@ def makeparagraphlist(lines):
 def makesentencelist(paragraph):
     # Takes in a string representing a paragraph, breaks it into sentences
     sentlist = re.split('[.!?]',paragraph) # Splits the book into sentences (can be refined much further)
+    for i in range(len(sentlist)):
+        sentlist[i] = sentlist[i].replace('\n',' ')
     return sentlist
 
 def bookintosentences(lines):

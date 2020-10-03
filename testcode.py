@@ -1,6 +1,6 @@
 import bookanalysis as an
 
-p = "pg63189.txt"
+p = "ParagraphTest.txt"
 #p = 'pg63189analysis.txt'
 #s = "1661-0.txt"
 
@@ -22,10 +22,6 @@ ptemp = an.makefulltextlist(open(p,encoding='utf8'))
 plist = an.gutenbergtrim(ptemp)
 
 ppara = an.makeparagraphlist(plist)
-print(ppara[:10])
-
-psent = an.makesentencelist(ppara[7])
-print(psent)
 
 biglist = an.bookintosentences(plist)
-print(biglist[:5])
+print(biglist)

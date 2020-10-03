@@ -1,6 +1,7 @@
 # This file is just defining functions - no actual code is executed here
 
 import string
+import re
 
 def saveanalysis(name,hist):
     newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
@@ -21,6 +22,27 @@ def cleanline(line):
     temp = temp.replace("--"," ") # Replace double hyphens with spaces to avoid unexpected compound words
     temp = temp.translate(str.maketrans("","",'!"“”’#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')) # Strip out all punctuation
     return temp
+
+def makeparagraphlist(lines):
+    # Takes in a list of strings, turns it into a list of paragraphs
+    fullbookstring = "" # Initialize the empty string
+    for l in lines: # This puts togethr a single string containing all text in the book
+        fullbookstring = fullbookstring + l # Append that line to the end of the string
+    paralist = fullbookstring.split('\n\n')
+    return paralist
+
+def makesentencelist(paragraph):
+    # Takes in a string representing a paragraph, breaks it into sentences
+    sentlist = re.split('[.!?]',paragraph) # Splits the book into sentences (can be refined much further)
+    return sentlist
+
+def bookintosentences(lines):
+    # Takes in the book as a list of lines, outputs a list where each item is a paragraph containing a list of sentences
+    biglist = list() # THE list - we'll add to this later
+    plist = makeparagraphlist(lines) # Turn the book into paragraphs
+    for p in range(len(plist)): # Run through every paragraph
+        biglist.append(makesentencelist(plist[p])) # Split the paragraph into sentences, then write to the big list
+    return biglist
 
 def sortdictval(d,rev):
     # Function to create a sorted list out of a dictionary, sorted by the values, not the keys

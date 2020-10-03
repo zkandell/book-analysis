@@ -1,18 +1,31 @@
 import bookanalysis as an
 
-#p = "pg63189.txt"
-p = 'pg63189analysis.txt'
-s = "1661-0.txt"
+p = "pg63189.txt"
+#p = 'pg63189analysis.txt'
+#s = "1661-0.txt"
 
 #phist = an.makewordfreqhist(an.gutenbergtrim(open(p,encoding='utf8')))
-phist = an.loadanalysis(open(p))
-shist = an.makehistogramfromfilename(s)
+#phist = an.loadanalysis(open(p))
+#shist = an.makehistogramfromfilename(s)
 
-textcomp = an.comparewordfreq(phist,shist)
+#textcomp = an.comparewordfreq(phist,shist)
 
-print("Most frequent words used only in Highwayman of the Void:",an.sortdictval(textcomp['anotb'], True)[:10])
-print("Most frequent words used only in The Adventures of Sherlock Holmes:",an.sortdictval(textcomp['bnota'], True)[:10])
-print("Words used far more often in Highwayman of the Void:",an.sortdictval(textcomp['aoverb'], True)[:10])
-print("Words used far more often in The Adventures of Sherlock Holmes:",an.sortdictval(textcomp['bovera'], True)[:10])
+#print("Most frequent words used only in Highwayman of the Void:",an.sortdictval(textcomp['anotb'], True)[:10])
+#print("Most frequent words used only in The Adventures of Sherlock Holmes:",an.sortdictval(textcomp['bnota'], True)[:10])
+#print("Words used far more often in Highwayman of the Void:",an.sortdictval(textcomp['aoverb'], True)[:10])
+#print("Words used far more often in The Adventures of Sherlock Holmes:",an.sortdictval(textcomp['bovera'], True)[:10])
 
-#an.saveanalysis("pg63189",phist)
+##an.saveanalysis("pg63189",phist)
+
+ptemp = an.makefulltextlist(open(p,encoding='utf8'))
+
+plist = an.gutenbergtrim(ptemp)
+
+ppara = an.makeparagraphlist(plist)
+print(ppara[:10])
+
+psent = an.makesentencelist(ppara[7])
+print(psent)
+
+biglist = an.bookintosentences(plist)
+print(biglist[:5])

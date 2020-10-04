@@ -42,8 +42,7 @@ def bookintosentences(lines):
     # Takes in the book as a list of lines, outputs a list where each item is a paragraph containing a list of sentences
     biglist = list() # THE list - we'll add to this later
     plist = makeparagraphlist(lines) # Turn the book into paragraphs
-    for p in range(len(plist)): # Run through every paragraph
-        biglist.append(makesentencelist(plist[p])) # Split the paragraph into sentences, then write to the big list
+    for p in range(len(plist)): biglist.append(makesentencelist(plist[p])) # Split every paragraph into sentences, then write to the big list
     return biglist
 
 def sortdictval(d,rev):
@@ -92,8 +91,8 @@ def gutenbergtrim(book):
     trimmedbook = b[start:end]
     return trimmedbook
 
-def makewordfreqhist(lineslist):
-    # Takes in a list containing all lines of a book, then constructs a histogram of word frequency and word count
+def makewordfreqhist(paralist):
+    # Takes in a list output from bookintosentences, spits out a histogram of word frequency
     # Initialize variables
     wordfreqhist = { } # Create the empty dictionary that will be returned at the end
     wordabscount = { } # This will include the number of times every word is used in the text
@@ -101,11 +100,13 @@ def makewordfreqhist(lineslist):
     count = 0 # The total word count
     
     # Count the words
-    for i in range(len(lineslist)): # Run through every line of text in the list
-        line = lineslist[i] # Get the line from the list
-        line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
-        wordlist = line.split() # Split the line into individual words
-        for b in wordlist: wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
+    for i in range(len(paralist)): # Run through every paragraph of text in the book
+        lineslist = paralist[i]
+        for j in range(len(lineslist)):
+            line = lineslist[j] # Get the line from the list
+            line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
+            wordlist = line.split() # Split the line into individual words
+            for b in wordlist: wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
     
     # Calculate the word count
     for word in wordabscount: count+=wordabscount[word]

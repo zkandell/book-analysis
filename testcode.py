@@ -1,12 +1,15 @@
 import bookanalysis as an
 
 #p = "ParagraphTest.txt"
-p = 'pg63189analysis.txt'
+p = 'pg63189.txt'
 s = "1661-0.txt"
 
 #phist = an.makewordfreqhist(an.gutenbergtrim(open(p,encoding='utf8')))
-phist = an.loadanalysis(open(p))
-shist = an.makehistogramfromfilename(s)
+#phist = an.loadanalysis(open(p))
+#shist = an.makehistogramfromfilename(s)
+
+phist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(p,encoding='utf8')))))
+shist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(s,encoding='utf8')))))
 
 textcomp = an.comparewordfreq(phist,shist)
 
@@ -17,13 +20,13 @@ print("Words used far more often in The Adventures of Sherlock Holmes:",an.sortd
 
 ##an.saveanalysis("pg63189",phist)
 
-p = "ParagraphTest.txt"
+#p = "ParagraphTest.txt"
 
-ptemp = an.makefulltextlist(open(p,encoding='utf8'))
+#ptemp = an.makefulltextlist(open(p,encoding='utf8'))
 
-plist = an.gutenbergtrim(ptemp)
+#plist = an.gutenbergtrim(ptemp)
 
-ppara = an.makeparagraphlist(plist)
+#ppara = an.makeparagraphlist(plist)
 
-biglist = an.bookintosentences(plist)
-print(biglist)
+#biglist = an.bookintosentences(plist)
+#print(biglist)

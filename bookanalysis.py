@@ -157,4 +157,4 @@ def comparewordfreq(book_a,book_b):
     
 def makehistogramfromfilename(filename):
     # Takes in a string pointing to the file location, returns the histogram
-    return makewordfreqhist(gutenbergtrim(makefulltextlist(open(filename,encoding='utf8')))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying
+    return makewordfreqhist(bookintosentences(gutenbergtrim(makefulltextlist(open(filename,encoding='utf8'))))) # Look, these functions need to be strung together somehow, and typing them all out every time is annoying

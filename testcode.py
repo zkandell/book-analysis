@@ -6,10 +6,10 @@ s = "1661-0.txt"
 
 #phist = an.makewordfreqhist(an.gutenbergtrim(open(p,encoding='utf8')))
 #phist = an.loadanalysis(open(p))
-#shist = an.makehistogramfromfilename(s)
+shist = an.makehistogramfromfilename(s)
 
 phist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(p,encoding='utf8')))))
-shist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(s,encoding='utf8')))))
+#shist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(s,encoding='utf8')))))
 
 textcomp = an.comparewordfreq(phist,shist)
 

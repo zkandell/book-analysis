@@ -49,7 +49,7 @@ def bookintosentences(lines):
 def sortdictval(d,rev):
     # Function to create a sorted list out of a dictionary, sorted by the values, not the keys
     tmp = list() # Create an empty list
-    sortlist = list() # Create an empty version of the returned list
+    sortlist = list()
     for k,v in d.items(): # Run through every item in the dictionary
         tmp.append((v,k)) # Add a tuple to the list, but in reversed order, putting values before keys
         # Sort the list, with rev determining which order the list is sorted in
@@ -129,6 +129,16 @@ def xnoty(book_x,book_y):
             xnotydict[key] = histcount_x[key] # Add entry to xnoty dictionary - this notes down the absolute count, not frequency
     return xnotydict
 
+def xovery(book_x,book_y):
+    # Builds a dictionary of the relative frequency of all words that appear in both books
+    histfreq_x = book_x['wordrelcount']
+    histfreq_y = book_y['wordrelcount']
+    xoverydict = dict()
+    for key in histfreq_x: # Loop through every entry in x
+        if histfreq_y.get(key,0) != 0: # Run only if the word is in both dictionaries
+            xoverydict[key] = histfreq_x[key]/histfreq_y[key]
+    return xoverydict
+
 def comparewordfreq(book_a,book_b):
     # book_a and book_b are the output of makewordfreqhist: dictionaries with word count, absolute counts, and relative frequencies
     # Pull out each individual dictionary from the inputs
@@ -137,19 +147,13 @@ def comparewordfreq(book_a,book_b):
     histcount_b = book_b["wordabscount"]
     histfreq_b = book_b["wordrelcount"]
         
-    # Create empty dictionaries that we're going to return later
-    aoverb = { }
-    bovera = { }
-        
     # Build histogram of words that are in one book but not the other
     anotb = xnoty(book_a,book_b)
     bnota = xnoty(book_b,book_a)
             
-    # Make two dictionaries of words in both; key is word, value is frequency in a divided by frequency in b for aoverb, frequency in b divided by frequency in a for bovera
-    for key in histfreq_a: # Loop through every entry in a
-        if histfreq_b.get(key,0) != 0: # Run only if the word is in both dictionaries
-            aoverb[key] = histfreq_a[key]/histfreq_b[key]
-            bovera[key] = histfreq_b[key]/histfreq_a[key]
+    # Make two dictionaries of words in both
+    aoverb = xovery(book_a,book_b)
+    bovera = xovery(book_b,book_a)
             
     wordfreqcomparison = { } # Create the main dictionary we'll return at the end
     # Fill up that dictionary

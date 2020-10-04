@@ -53,7 +53,6 @@ def sortdictval(d,rev):
     tmp = sorted(tmp, reverse=rev)
     for v,k in tmp: # Run through all items in tmp
         sortlist.append((k,v)) # Reverse the order to get key value pairs in the right order again
-    # You return a list, not a dictionary, because lists have order, while dictionaries do not
     return sortlist
     
 def makefulltextlist(file):

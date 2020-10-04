@@ -142,27 +142,16 @@ def xovery(book_x,book_y):
     return xoverydict
 
 def comparewordfreq(book_a,book_b):
-    # book_a and book_b are the output of makewordfreqhist: dictionaries with word count, absolute counts, and relative frequencies
-    # Pull out each individual dictionary from the inputs
-    histcount_a = book_a["wordabscount"]
-    histfreq_a = book_a["wordrelcount"]
-    histcount_b = book_b["wordabscount"]
-    histfreq_b = book_b["wordrelcount"]
-        
-    # Build histogram of words that are in one book but not the other
-    anotb = xnoty(book_a,book_b)
-    bnota = xnoty(book_b,book_a)
-            
-    # Make two dictionaries of words in both
-    aoverb = xovery(book_a,book_b)
-    bovera = xovery(book_b,book_a)
-            
+    # book_a and book_b are the output of makewordfreqhist: dictionaries with word count, absolute counts, and relative frequencies          
     wordfreqcomparison = { } # Create the main dictionary we'll return at the end
-    # Fill up that dictionary
-    wordfreqcomparison["anotb"] = anotb
-    wordfreqcomparison["bnota"] = bnota
-    wordfreqcomparison["aoverb"] = aoverb
-    wordfreqcomparison["bovera"] = bovera
+    
+    # Build histogram of words that are in one book but not the other
+    wordfreqcomparison["anotb"] = xnoty(book_a,book_b)
+    wordfreqcomparison["bnota"] = xnoty(book_b,book_a)
+
+    # Make two dictionaries of words in both
+    wordfreqcomparison["aoverb"] = xovery(book_a,book_b)
+    wordfreqcomparison["bovera"] = xovery(book_b,book_a)
     
     return wordfreqcomparison
     

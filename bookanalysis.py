@@ -91,33 +91,42 @@ def gutenbergtrim(book):
     trimmedbook = b[start:end]
     return trimmedbook
 
-def makewordfreqhist(paralist):
-    # Takes in a list output from bookintosentences, spits out a histogram of word frequency
-    # Initialize variables
-    wordfreqhist = { } # Create the empty dictionary that will be returned at the end
-    wordabscount = { } # This will include the number of times every word is used in the text
-    wordrelcount = { } # The previous dictionary, but with all values divided by the total word count of the text, to get a relative measure of how frequent words are
-    count = 0 # The total word count
-    
-    # Count the words
+def counttwowordphrases(paralist):
+    # Goes through the entire book and counts the number of times each two-word phrase is used
+    return
+
+def countwords(paralist):
+    # Takes in the paragraph list, counts how often each specific word is used
+    wordscount = { }
     for i in range(len(paralist)): # Run through every paragraph of text in the book
         lineslist = paralist[i]
         for j in range(len(lineslist)):
             line = lineslist[j] # Get the line from the list
             line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
             wordlist = line.split() # Split the line into individual words
-            for b in wordlist: wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
-    
-    # Calculate the word count
-    for word in wordabscount: count+=wordabscount[word]
+            for b in wordlist: wordscount[b] = wordscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
+    return wordscount
 
+def getphrasecount(hist):
+    # Gets the total word/phrase count from a histogram of individual word/phrase count
+    wordcount = 0
+    for word in hist: wordcount+=hist[word] # Add the uses of each individual word/phrase to the total count
+    return wordcount
+
+def getphrasefreq(hist,count):
     # Turn the word counts into frequency
-    for word in wordabscount: wordrelcount[word] = wordabscount[word]/count # Loop through every entry in the raw word count list, divide by total word count to get frequency
-    
+    relcount = { }
+    for word in hist: relcount[word] = hist[word]/count # Divide usage of phrase by total phrases to get frequency, for every phrase in the book
+    return relcount
+
+def makewordfreqhist(paralist):
+    # Takes in a list output from bookintosentences, spits out a histogram of word frequency
+    # Initialize variables
+    wordfreqhist = { } # Create the empty dictionary that will be returned at the end
     # Build the dictionary that the function returns
-    wordfreqhist["wordcount"] = count
-    wordfreqhist["wordabscount"] = wordabscount
-    wordfreqhist["wordrelcount"] = wordrelcount
+    wordfreqhist['wordabscount'] = countwords(paralist)
+    wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['wordabscount'])
+    wordfreqhist['wordrelcount'] = getphrasefreq(wordfreqhist['wordabscount'],wordfreqhist['wordcount'])
     
     return wordfreqhist
 

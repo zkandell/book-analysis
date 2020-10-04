@@ -1,5 +1,3 @@
-# This file is just defining functions - no actual code is executed here
-
 import string
 import re
 
@@ -77,7 +75,7 @@ def gutenbergtrim(book):
     title = None
     for i in range(len(b)): # Loop through all the lines in the book
         line = b[i].strip() # Strip off the whitespace to simplify text comparison
-        if line.startswith("Title: "): title = line[7:].strip() # Get the title of the book
+        if line.startswith("Title: "): title = line[7:] # Get the title of the book
         # Once you've determined the title, find the first line with the title, generally where the book itself starts; this line is finicky to correct for inconsistent capitalization
         if title is not None and line.lower().startswith(title.lower()):
             start = i
@@ -127,8 +125,7 @@ def xnoty(book_x,book_y):
     histcount_y = book_y['wordabscount']
     xnotydict = {} # Initialize dictionary we're about to fill up
     for key in histcount_x: # Looping through every entry in x
-        if histcount_y.get(key,0) == 0: # If entry in y doesn't appear in x
-            xnotydict[key] = histcount_x[key] # Add entry to xnoty dictionary - this notes down the absolute count, not frequency
+        if histcount_y.get(key,0) == 0: xnotydict[key] = histcount_x[key] #If entry in y doesn't appear in x, add entry to xnoty dictionary - this notes down the absolute count, not frequency
     return xnotydict
 
 def xovery(book_x,book_y):
@@ -136,9 +133,8 @@ def xovery(book_x,book_y):
     histfreq_x = book_x['wordrelcount']
     histfreq_y = book_y['wordrelcount']
     xoverydict = dict()
-    for key in histfreq_x: # Loop through every entry in x
-        if histfreq_y.get(key,0) != 0: # Run only if the word is in both dictionaries
-            xoverydict[key] = histfreq_x[key]/histfreq_y[key]
+    for key in histfreq_x:
+        if histfreq_y.get(key,0) != 0: xoverydict[key] = histfreq_x[key]/histfreq_y[key] # For every word in both dictionaries, record the ratio of the two
     return xoverydict
 
 def comparewordfreq(book_a,book_b):

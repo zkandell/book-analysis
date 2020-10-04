@@ -17,11 +17,13 @@ print("Words used far more often in The Adventures of Sherlock Holmes:",an.sortd
 
 ##an.saveanalysis("pg63189",phist)
 
-#ptemp = an.makefulltextlist(open(p,encoding='utf8'))
+p = "ParagraphTest.txt"
 
-#plist = an.gutenbergtrim(ptemp)
+ptemp = an.makefulltextlist(open(p,encoding='utf8'))
 
-#ppara = an.makeparagraphlist(plist)
+plist = an.gutenbergtrim(ptemp)
 
-#biglist = an.bookintosentences(plist)
-#print(biglist)
+ppara = an.makeparagraphlist(plist)
+
+biglist = an.bookintosentences(plist)
+print(biglist)

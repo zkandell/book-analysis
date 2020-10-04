@@ -105,13 +105,14 @@ def makewordfreqhist(lineslist):
         line = lineslist[i] # Get the line from the list
         line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
         wordlist = line.split() # Split the line into individual words
-        for b in wordlist: # Run through every word on the line
-            wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
-            count += 1 # Increment total word count
+        for b in wordlist: wordabscount[b] = wordabscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
+    
+    # Calculate the word count
+    for word in wordabscount: count+=wordabscount[word]
 
     # Turn the word counts into frequency
     for word in wordabscount: wordrelcount[word] = wordabscount[word]/count # Loop through every entry in the raw word count list, divide by total word count to get frequency
-        
+    
     # Build the dictionary that the function returns
     wordfreqhist["wordcount"] = count
     wordfreqhist["wordabscount"] = wordabscount

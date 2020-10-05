@@ -104,29 +104,6 @@ def countwordngram(paralist,n):
                 phrasecount[phrase] = phrasecount.get(phrase,0)+1 # Increment count, add to dictionary if not seen already
     return phrasecount
 
-def counttwowordphrases(paralist):
-    # Goes through the entire book and counts the number of times each two-word phrase is used
-    phrasecount = { }
-    for i in range(len(paralist)):
-        lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
-        for j in range(len(lineslist)):
-            wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
-            for b in range(len(wordlist)-1):
-                phrase = getngramfromline(wordlist,b,2)
-                phrasecount[phrase] = phrasecount.get(phrase,0)+1 # Increment count, add to dictionary if not seen already
-    return phrasecount
-
-def countwords(paralist):
-    # Takes in the paragraph list, counts how often each specific word is used
-    wordscount = { }
-    for i in range(len(paralist)):
-        lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
-        for j in range(len(lineslist)):
-            wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
-            for b in wordlist: 
-                wordscount[b] = wordscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
-    return wordscount
-
 def getphrasecount(hist):
     # Gets the total word/phrase count from a histogram of individual word/phrase count
     wordcount = 0

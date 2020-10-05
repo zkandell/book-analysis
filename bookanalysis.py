@@ -3,7 +3,7 @@ import re
 
 def saveanalysis(name,hist):
     newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
-    file = open(newfilename, "w") # Creates a new file to write thsi information to
+    file = open(newfilename, "w") # Creates a new file to write this information to
     file.write(str(hist)) # Write the dictionary as a string to a file - sure, it's a basic method, but it works
     file.close # Closes the file
     return newfilename
@@ -51,8 +51,7 @@ def sortdictval(d,rev):
     # You return a list, not a dictionary, because lists have order, while dictionaries do not
     return sortlist
     
-def makefulltextlist(file):
-    return file.readlines()
+def makefulltextlist(file): return file.readlines()
 
 def gutenbergtrim(book):
     # If the book came from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book
@@ -80,22 +79,21 @@ def gutenbergtrim(book):
 
 def getngramfromline(wordlist,i,n):
     # From a list of words, it retrieves a phrase of n words, starting at index i
-    ngram = wordlist[i]
-    if n == 1: return ngram
+    ngram = wordlist[i] # Start by grabbing the first word of the ngram
+    if n == 1: return ngram # If n is 1, then we're done already
     else:
-        for j in range(1,n): ngram = ngram + ' ' + wordlist[i+j] # Add words to the list
+        for j in range(1,n): ngram = ngram + ' ' + wordlist[i+j] # Run through the rest of n words, adding them to the string
     return ngram # Return the string we just created
 
 def countwordngram(paralist,n):
-    # Counts the number of times each n-length word phrase is used
-    # paralist is the list created by bookintosentences, n is the word length of phrases you're interested in tracking
+    # Counts the number of times each n-length word phrase is used; paralist is the list created by bookintosentences, n is the word length of phrases you're interested in tracking
     phrasecount = { }
     for i in range(len(paralist)):
         lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
         for j in range(len(lineslist)):
             wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
             for b in range(len(wordlist)-(n-1)):
-                phrase = getngramfromline(wordlist,b,n)
+                phrase = getngramfromline(wordlist,b,n) # Get the phrase we're looking for
                 phrasecount[phrase] = phrasecount.get(phrase,0)+1 # Increment count, add to dictionary if not seen already
     return phrasecount
 

@@ -1,5 +1,3 @@
-# This file is just defining functions - no actual code is executed here
-
 import string
 import re
 
@@ -54,10 +52,7 @@ def sortdictval(d,rev):
     return sortlist
     
 def makefulltextlist(file):
-    # Takes the file and makes a list where each item is a line of text - allows finer control over going through each line later than file.seek()
-    lines = []
-    for line in file: lines.append(line)
-    return lines
+    return file.readlines()
 
 def gutenbergtrim(book):
     # If the book came from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book

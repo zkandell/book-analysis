@@ -1,5 +1,5 @@
 import string
-import re
+import regex as re
 
 def saveanalysis(name,hist):
     newfilename = name + "analysis.txt" # Creates a file name for the new file that will be written - string of the file name is returned with the function
@@ -30,7 +30,7 @@ def makeparagraphlist(lines):
 
 def makesentencelist(paragraph):
     # Takes in a string representing a paragraph, breaks it into sentences
-    sentlist = re.split('(?<!Mr|Dr|Sr|Jr|Mrs|Ms|Mx|etc|misc|Ave|Blvd|Ln|St|Rd)\.|[!?]',paragraph) # Splits the book into sentences (adds exceptions for common abbreviations ending in a period)
+    sentlist = re.split('(?i)(?<!Mr|Dr|Sr|Jr|Mrs|Ms|Mx|etc|misc|Ave|Blvd|Ln|St|Rd)\.|[!?]',paragraph) # Splits the book into sentences (adds exceptions for common abbreviations ending in a period)
     for i in range(len(sentlist)): sentlist[i] = sentlist[i].replace('\n',' ') # Replace newlines with spaces to fix formatting issues
     return sentlist
 

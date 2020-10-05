@@ -26,8 +26,6 @@ ptemp = an.makefulltextlist(open(p,encoding='utf8'))
 
 plist = an.gutenbergtrim(ptemp)
 
-ppara = an.makeparagraphlist(plist)
-
 biglist = an.bookintosentences(plist)
 print(biglist)
 

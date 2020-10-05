@@ -1,4 +1,4 @@
-Here is how I test if Mr. Holmes and Dr. Watson are treated well
+Here is how I test if Mr. Holmes and dr. Watson are treated well
 by the test I have concocted to find them. 
 
 To Sherlock Holmes she is always _the_ woman. I have seldom heard him

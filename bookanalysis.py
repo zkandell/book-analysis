@@ -26,16 +26,15 @@ def cleanline(line):
 def makeparagraphlist(lines):
     # Takes in a list of strings, turns it into a list of paragraphs
     fullbookstring = "" # Initialize the empty string
-    for l in lines: # This puts togethr a single string containing all text in the book
+    for l in lines: # This puts together a single string containing all text in the book
         fullbookstring = fullbookstring + l # Append that line to the end of the string
-    paralist = fullbookstring.split('\n\n')
+    paralist = fullbookstring.split('\n\n') # Two newlines are used to separate paragraphs, so split on those to divide the list into paragraphs
     return paralist
 
 def makesentencelist(paragraph):
     # Takes in a string representing a paragraph, breaks it into sentences
     sentlist = re.split('[.!?]',paragraph) # Splits the book into sentences (can be refined much further)
-    for i in range(len(sentlist)):
-        sentlist[i] = sentlist[i].replace('\n',' ')
+    for i in range(len(sentlist)): sentlist[i] = sentlist[i].replace('\n',' ') # Replace newlines with spaces to fix formatting issues
     return sentlist
 
 def bookintosentences(lines):

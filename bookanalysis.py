@@ -26,8 +26,7 @@ def cleanline(line):
 def makeparagraphlist(lines):
     # Takes in a list of strings, turns it into a list of paragraphs
     fullbookstring = "" # Initialize the empty string
-    for l in lines: # This puts together a single string containing all text in the book
-        fullbookstring = fullbookstring + l # Append that line to the end of the string
+    for l in lines: fullbookstring = fullbookstring + l # Glue all the lines in the book together into a single string
     paralist = fullbookstring.split('\n\n') # Two newlines are used to separate paragraphs, so split on those to divide the list into paragraphs
     return paralist
 
@@ -48,12 +47,9 @@ def sortdictval(d,rev):
     # Function to create a sorted list out of a dictionary, sorted by the values, not the keys
     tmp = list() # Create an empty list
     sortlist = list()
-    for k,v in d.items(): # Run through every item in the dictionary
-        tmp.append((v,k)) # Add a tuple to the list, but in reversed order, putting values before keys
-        # Sort the list, with rev determining which order the list is sorted in
-    tmp = sorted(tmp, reverse=rev)
-    for v,k in tmp: # Run through all items in tmp
-        sortlist.append((k,v)) # Reverse the order to get key value pairs in the right order again
+    for k,v in d.items(): tmp.append((v,k)) # Build a list of tuples, with values in front of keys to allow sorting
+    tmp = sorted(tmp, reverse=rev) # Sort the list, with rev determining which order the list is sorted in
+    for v,k in tmp: sortlist.append((k,v)) # Reverse all items to get key value pairs in the right order again
     # You return a list, not a dictionary, because lists have order, while dictionaries do not
     return sortlist
     
@@ -70,8 +66,7 @@ def gutenbergtrim(book):
     else: 
         try: b = makefulltextlist(book) # Creates a list if the variable type passed in can be made into a list (like dictionaries or files)
         except: return [] # If a list can't be made, then return a blank list
-    # Initialize start, end, and title variables as None - will be set in the for loop
-    start = None
+    start = None # These variables will (in theory) be set in the for loop
     end = None
     title = None
     for i in range(len(b)): # Loop through all the lines in the book
@@ -84,7 +79,6 @@ def gutenbergtrim(book):
         if line.startswith("End of the Project Gutenberg EBook"): # Stop just short of this line, which is always the end of the story
             end = i
             break
-    
     if start == None: start = 0
     if end == None: end = len(b) # If this doesn't come from Project Gutenberg, setting these variable will cause the function to just return the entire document unaltered
     trimmedbook = b[start:end]
@@ -97,12 +91,10 @@ def counttwowordphrases(paralist):
 def countwords(paralist):
     # Takes in the paragraph list, counts how often each specific word is used
     wordscount = { }
-    for i in range(len(paralist)): # Run through every paragraph of text in the book
-        lineslist = paralist[i]
+    for i in range(len(paralist)):
+        lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
         for j in range(len(lineslist)):
-            line = lineslist[j] # Get the line from the list
-            line = cleanline(line) # Clean the line (remove white space, lowercase all letters, strip out punctuation)
-            wordlist = line.split() # Split the line into individual words
+            wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
             for b in wordlist: wordscount[b] = wordscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
     return wordscount
 
@@ -120,14 +112,12 @@ def getphrasefreq(hist,count):
 
 def makewordfreqhist(paralist):
     # Takes in a list output from bookintosentences, spits out a histogram of word frequency
-    # Initialize variables
-    wordfreqhist = { } # Create the empty dictionary that will be returned at the end
+    wordfreqhist = { }
     # Build the dictionary that the function returns
     wordfreqhist['wordabscount'] = countwords(paralist)
     wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['wordabscount'])
     wordfreqhist['wordrelcount'] = getphrasefreq(wordfreqhist['wordabscount'],wordfreqhist['wordcount'])
-    
-    return wordfreqhist
+        return wordfreqhist
 
 def xnoty(book_x,book_y):
     # Builds a dictionary with the absolute count of words used in one book and not the other
@@ -135,8 +125,7 @@ def xnoty(book_x,book_y):
     histcount_y = book_y['wordabscount']
     xnotydict = {} # Initialize dictionary we're about to fill up
     for key in histcount_x: # Looping through every entry in x
-        if histcount_y.get(key,0) == 0: # If entry in y doesn't appear in x
-            xnotydict[key] = histcount_x[key] # Add entry to xnoty dictionary - this notes down the absolute count, not frequency
+        if histcount_y.get(key,0) == 0: xnotydict[key] = histcount_x[key] # If entry in y doesn't appear in x, add the absolute count to the dictionary
     return xnotydict
 
 def xovery(book_x,book_y):
@@ -145,8 +134,7 @@ def xovery(book_x,book_y):
     histfreq_y = book_y['wordrelcount']
     xoverydict = dict()
     for key in histfreq_x: # Loop through every entry in x
-        if histfreq_y.get(key,0) != 0: # Run only if the word is in both dictionaries
-            xoverydict[key] = histfreq_x[key]/histfreq_y[key]
+        if histfreq_y.get(key,0) != 0: xoverydict[key] = histfreq_x[key]/histfreq_y[key] # If it's in both dictionaries, record the ratio of the two frequencies
     return xoverydict
 
 def comparewordfreq(book_a,book_b):

@@ -86,7 +86,15 @@ def gutenbergtrim(book):
 
 def counttwowordphrases(paralist):
     # Goes through the entire book and counts the number of times each two-word phrase is used
-    return
+    phrasecount = { }
+    for i in range(len(paralist)):
+        lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
+        for j in range(len(lineslist)):
+            wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
+            for b in range(len(wordlist)-1):
+                phrase = wordlist[b] + ' ' + wordlist[b+1]
+                phrasecount[phrase] = phrasecount.get(phrase,0)+1 # Increment count, add to dictionary if not seen already
+    return phrasecount
 
 def countwords(paralist):
     # Takes in the paragraph list, counts how often each specific word is used
@@ -117,7 +125,7 @@ def makewordfreqhist(paralist):
     wordfreqhist['wordabscount'] = countwords(paralist)
     wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['wordabscount'])
     wordfreqhist['wordrelcount'] = getphrasefreq(wordfreqhist['wordabscount'],wordfreqhist['wordcount'])
-        return wordfreqhist
+    return wordfreqhist
 
 def xnoty(book_x,book_y):
     # Builds a dictionary with the absolute count of words used in one book and not the other

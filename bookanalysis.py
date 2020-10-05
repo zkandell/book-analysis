@@ -61,10 +61,9 @@ def makefulltextlist(file):
 
 def gutenbergtrim(book):
     # If the book came from Project Gutenberg, this function will attempt to trim off data that doesn't belong to the book
-    # This function is intended to be used with a list, but it can also take a file handle
-    if isinstance(book,list): b = book # If you've passed in a book, then no need to do anything special
+    if isinstance(book,list): b = book # If you've passed in a list of all lines in the book, then no need to do anything special
     else: 
-        try: b = makefulltextlist(book) # Creates a list if the variable type passed in can be made into a list (like dictionaries or files)
+        try: b = makefulltextlist(book) # Creates a list if a file is passed into the function
         except: return [] # If a list can't be made, then return a blank list
     start = None # These variables will (in theory) be set in the for loop
     end = None
@@ -84,6 +83,27 @@ def gutenbergtrim(book):
     trimmedbook = b[start:end]
     return trimmedbook
 
+def getngramfromline(wordlist,i,n):
+    # From a list of words, it retrieves a phrase of n words, starting at index i
+    ngram = wordlist[i]
+    if n == 1: return ngram
+    else:
+        for j in range(1,n): ngram = ngram + ' ' + wordlist[i+j] # Add words to the list
+    return ngram # Return the string we just created
+
+def countwordngram(paralist,n):
+    # Counts the number of times each n-length word phrase is used
+    # paralist is the list created by bookintosentences, n is the word length of phrases you're interested in tracking
+    phrasecount = { }
+    for i in range(len(paralist)):
+        lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
+        for j in range(len(lineslist)):
+            wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
+            for b in range(len(wordlist)-(n-1)):
+                phrase = getngramfromline(wordlist,b,n)
+                phrasecount[phrase] = phrasecount.get(phrase,0)+1 # Increment count, add to dictionary if not seen already
+    return phrasecount
+
 def counttwowordphrases(paralist):
     # Goes through the entire book and counts the number of times each two-word phrase is used
     phrasecount = { }
@@ -92,7 +112,7 @@ def counttwowordphrases(paralist):
         for j in range(len(lineslist)):
             wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
             for b in range(len(wordlist)-1):
-                phrase = wordlist[b] + ' ' + wordlist[b+1]
+                phrase = getngramfromline(wordlist,b,2)
                 phrasecount[phrase] = phrasecount.get(phrase,0)+1 # Increment count, add to dictionary if not seen already
     return phrasecount
 
@@ -103,7 +123,8 @@ def countwords(paralist):
         lineslist = paralist[i] # Run through every paragraph of text in the book, pulling out sentences
         for j in range(len(lineslist)):
             wordlist = cleanline(lineslist[j]).split() # Loop through every sentence, cleaning it up, then splitting it into individual words
-            for b in wordlist: wordscount[b] = wordscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
+            for b in wordlist: 
+                wordscount[b] = wordscount.get(b,0)+1 # Increment count, add to dictionary if not seen already
     return wordscount
 
 def getphrasecount(hist):
@@ -122,7 +143,7 @@ def makewordfreqhist(paralist):
     # Takes in a list output from bookintosentences, spits out a histogram of word frequency
     wordfreqhist = { }
     # Build the dictionary that the function returns
-    wordfreqhist['wordabscount'] = countwords(paralist)
+    wordfreqhist['wordabscount'] = countwordngram(paralist,1)
     wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['wordabscount'])
     wordfreqhist['wordrelcount'] = getphrasefreq(wordfreqhist['wordabscount'],wordfreqhist['wordcount'])
     return wordfreqhist

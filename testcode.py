@@ -33,5 +33,5 @@ print("Words used far more often in The Adventures of Sherlock Holmes:",an.sortd
 
 testpara = an.makefulltextlist(open(s,encoding='utf8'))
 testpara = an.bookintosentences(testpara)
-testparahist = an.countwordngram(testpara,2)
+testparahist = an.countngram(testpara,2)
 print(an.sortdictval(testparahist,True)[:10])

@@ -85,7 +85,7 @@ def getngramfromline(wordlist,i,n):
         for j in range(1,n): ngram = ngram + ' ' + wordlist[i+j] # Run through the rest of n words, adding them to the string
     return ngram # Return the string we just created
 
-def countwordngram(paralist,n):
+def countngram(paralist,n):
     # Counts the number of times each n-length word phrase is used; paralist is the list created by bookintosentences, n is the word length of phrases you're interested in tracking
     phrasecount = { }
     for i in range(len(paralist)):
@@ -113,7 +113,7 @@ def makewordfreqhist(paralist):
     # Takes in a list output from bookintosentences, spits out a histogram of word frequency
     wordfreqhist = { }
     # Build the dictionary that the function returns
-    wordfreqhist['wordabscount'] = countwordngram(paralist,1)
+    wordfreqhist['wordabscount'] = countngram(paralist,1)
     wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['wordabscount'])
     wordfreqhist['wordrelcount'] = getphrasefreq(wordfreqhist['wordabscount'],wordfreqhist['wordcount'])
     return wordfreqhist

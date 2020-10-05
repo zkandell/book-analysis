@@ -30,7 +30,7 @@ def makeparagraphlist(lines):
 
 def makesentencelist(paragraph):
     # Takes in a string representing a paragraph, breaks it into sentences
-    sentlist = re.split('[.!?]',paragraph) # Splits the book into sentences (can be refined much further)
+    sentlist = re.split('(?<!Mr|Dr|Sr|Jr|Mrs|Ms|Mx|etc|misc|Ave|Blvd|Ln|St|Rd)\.|[!?]',paragraph) # Splits the book into sentences (adds exceptions for common abbreviations ending in a period)
     for i in range(len(sentlist)): sentlist[i] = sentlist[i].replace('\n',' ') # Replace newlines with spaces to fix formatting issues
     return sentlist
 

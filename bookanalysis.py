@@ -118,19 +118,15 @@ def makewordfreqhist(paralist):
     wordfreqhist['1wordrelcount'] = getphrasefreq(wordfreqhist['1wordabscount'],wordfreqhist['wordcount'])
     return wordfreqhist
 
-def xnoty(book_x,book_y):
+def xnoty(histcount_x,histcount_y):
     # Builds a dictionary with the absolute count of words used in one book and not the other
-    histcount_x = book_x['1wordabscount'] # Get word counts from the dictionary passed in for each book
-    histcount_y = book_y['1wordabscount']
     xnotydict = {} # Initialize dictionary we're about to fill up
     for key in histcount_x: # Looping through every entry in x
         if histcount_y.get(key,0) == 0: xnotydict[key] = histcount_x[key] # If entry in y doesn't appear in x, add the absolute count to the dictionary
     return xnotydict
 
-def xovery(book_x,book_y):
+def xovery(histfreq_x,histfreq_y):
     # Builds a dictionary of the relative frequency of all words that appear in both books
-    histfreq_x = book_x['1wordrelcount']
-    histfreq_y = book_y['1wordrelcount']
     xoverydict = dict()
     for key in histfreq_x: # Loop through every entry in x
         if histfreq_y.get(key,0) != 0: xoverydict[key] = histfreq_x[key]/histfreq_y[key] # If it's in both dictionaries, record the ratio of the two frequencies
@@ -141,12 +137,12 @@ def comparewordfreq(book_a,book_b):
     wordfreqcomparison = { } # Create the main dictionary we'll return at the end
     
     # Build histogram of words that are in one book but not the other
-    wordfreqcomparison["anotb"] = xnoty(book_a,book_b)
-    wordfreqcomparison["bnota"] = xnoty(book_b,book_a)
+    wordfreqcomparison["anotb"] = xnoty(book_a['1wordabscount'],book_b['1wordabscount'])
+    wordfreqcomparison["bnota"] = xnoty(book_b['1wordabscount'],book_a['1wordabscount'])
 
     # Make two dictionaries of words in both
-    wordfreqcomparison["aoverb"] = xovery(book_a,book_b)
-    wordfreqcomparison["bovera"] = xovery(book_b,book_a)
+    wordfreqcomparison["aoverb"] = xovery(book_a['1wordrelcount'],book_b['1wordrelcount'])
+    wordfreqcomparison["bovera"] = xovery(book_b['1wordrelcount'],book_a['1wordrelcount'])
     
     return wordfreqcomparison
     

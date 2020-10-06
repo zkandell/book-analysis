@@ -113,15 +113,15 @@ def makewordfreqhist(paralist):
     # Takes in a list output from bookintosentences, spits out a histogram of word frequency
     wordfreqhist = { }
     # Build the dictionary that the function returns
-    wordfreqhist['wordabscount'] = countwordngram(paralist,1)
-    wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['wordabscount'])
-    wordfreqhist['wordrelcount'] = getphrasefreq(wordfreqhist['wordabscount'],wordfreqhist['wordcount'])
+    wordfreqhist['1wordabscount'] = countwordngram(paralist,1)
+    wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['1wordabscount'])
+    wordfreqhist['1wordrelcount'] = getphrasefreq(wordfreqhist['1wordabscount'],wordfreqhist['wordcount'])
     return wordfreqhist
 
 def xnoty(book_x,book_y):
     # Builds a dictionary with the absolute count of words used in one book and not the other
-    histcount_x = book_x['wordabscount'] # Get word counts from the dictionary passed in for each book
-    histcount_y = book_y['wordabscount']
+    histcount_x = book_x['1wordabscount'] # Get word counts from the dictionary passed in for each book
+    histcount_y = book_y['1wordabscount']
     xnotydict = {} # Initialize dictionary we're about to fill up
     for key in histcount_x: # Looping through every entry in x
         if histcount_y.get(key,0) == 0: xnotydict[key] = histcount_x[key] # If entry in y doesn't appear in x, add the absolute count to the dictionary
@@ -129,8 +129,8 @@ def xnoty(book_x,book_y):
 
 def xovery(book_x,book_y):
     # Builds a dictionary of the relative frequency of all words that appear in both books
-    histfreq_x = book_x['wordrelcount']
-    histfreq_y = book_y['wordrelcount']
+    histfreq_x = book_x['1wordrelcount']
+    histfreq_y = book_y['1wordrelcount']
     xoverydict = dict()
     for key in histfreq_x: # Loop through every entry in x
         if histfreq_y.get(key,0) != 0: xoverydict[key] = histfreq_x[key]/histfreq_y[key] # If it's in both dictionaries, record the ratio of the two frequencies

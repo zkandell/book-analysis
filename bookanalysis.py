@@ -41,7 +41,7 @@ def bookintosentences(lines):
     for p in range(len(plist)): biglist.append(makesentencelist(plist[p])) # Split every paragraph into sentences, then write to the big list
     return biglist
 
-def sortdictval(d,rev):
+def sortdictval(d,rev=True):
     # Function to create a sorted list out of a dictionary, sorted by the values, not the keys
     tmp = list() # Create an empty list
     sortlist = list()
@@ -116,6 +116,11 @@ def makewordfreqhist(paralist):
     wordfreqhist['1wordabscount'] = countwordngram(paralist,1)
     wordfreqhist['wordcount'] = getphrasecount(wordfreqhist['1wordabscount'])
     wordfreqhist['1wordrelcount'] = getphrasefreq(wordfreqhist['1wordabscount'],wordfreqhist['wordcount'])
+    wordfreqhist['2wordabscount'] = countwordngram(paralist,2)
+    wordfreqhist['2wordrelcount'] = getphrasefreq(wordfreqhist['2wordabscount'],getphrasecount(wordfreqhist['2wordabscount']))
+    wordfreqhist['3wordabscount'] = countwordngram(paralist,3)
+    wordfreqhist['3wordrelcount'] = getphrasefreq(wordfreqhist['3wordabscount'],getphrasecount(wordfreqhist['3wordabscount']))
+
     return wordfreqhist
 
 def xnoty(histcount_x,histcount_y):

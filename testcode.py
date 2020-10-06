@@ -11,6 +11,10 @@ shist = an.makehistogramfromfilename(s)
 phist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(p,encoding='utf8')))))
 #shist = an.makewordfreqhist(an.bookintosentences(an.gutenbergtrim(an.makefulltextlist(open(s,encoding='utf8')))))
 
+print(an.sortdictval(phist['1wordabscount'])[:10])
+print(an.sortdictval(phist['2wordabscount'])[:10])
+print(an.sortdictval(phist['3wordabscount'])[:10])
+
 textcomp = an.comparewordfreq(phist,shist)
 
 print("Most frequent words used only in Highwayman of the Void:",an.sortdictval(textcomp['anotb'], True)[:10])
